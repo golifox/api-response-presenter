@@ -1,0 +1,32 @@
+AllCops:
+  TargetRubyVersion: 2.7.4
+  SuggestExtensions: false
+  NewCops: enable
+
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
+
+Style/Documentation:
+  Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Layout/HashAlignment:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
+Style/OpenStructUse:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Lint/NonDeterministicRequireOrder:
+  Exclude:
+    - 'spec/**/*'
+
+Style/StringLiterals:
+  Exclude:
+    - 'spec/**/*'
