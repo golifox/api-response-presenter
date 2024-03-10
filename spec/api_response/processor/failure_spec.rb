@@ -4,13 +4,13 @@ require 'oj'
 
 RSpec.describe ApiResponse::Processor::Failure do
   describe '.call' do
-    before(:each) { ApiResponse.reset_config }
+    subject { described_class.new(response).call }
+
+    before { ApiResponse.reset_config }
 
     let(:body) { "{\"error\":\"Not found\"}" }
     let(:response) { double('Response', body: body, status: 404) }
     let!(:config) { ApiResponse.config }
-
-    subject { described_class.new(response).call }
 
     context 'when config is default' do
       it { is_expected.to eq(config.default_return_value) }
@@ -32,6 +32,7 @@ RSpec.describe ApiResponse::Processor::Failure do
       end
 
       it { is_expected.to be_failure }
+
       it 'returns a monad with default attributes' do
         expect(subject.failure).to include(error:     config.default_error,
                                            error_key: config.default_error_key,

@@ -14,4 +14,5 @@ group :tools do
   gem 'rubocop-rspec', '~> 2.0'
   gem 'byebug'
   gem 'bundler', '~> 2.0'
+  gem 'pry'
 end

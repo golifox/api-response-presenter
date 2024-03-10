@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'api_response/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'api-response'
+  s.name        = 'api-response-presenter'
   s.author      = 'David Rybolovlev'
   s.email       = 'i@golifox.ru'
   s.license     = 'MIT'
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.summary     = 'Gem for presenting API responses from Faraday and RestClient.'
   s.description = s.summary
-  s.files       = Dir['README.md', 'LICENSE', 'CHANGELOG.md', 'api_response.gemspec', 'lib/**/*.rb']
+  s.files       = Dir['README.md', 'LICENSE', 'CHANGELOG.md', 'api_response_presenter.gemspec', 'lib/**/*.rb']
   s.executables = []
   s.require_paths = ['lib']
 

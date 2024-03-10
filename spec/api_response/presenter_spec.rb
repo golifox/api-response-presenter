@@ -2,7 +2,7 @@
 
 RSpec.describe ApiResponse::Presenter do
   describe '.call' do
-    before(:each) { ApiResponse.reset_config }
+    before { ApiResponse.reset_config }
 
     let(:response) { double('Response', success?: true, status: 200, body: '{"id": 1}') }
 

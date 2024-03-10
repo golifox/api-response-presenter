@@ -10,8 +10,8 @@ module ApiResponse
 
     def self.call(response, options:, config: ApiResponse.config.dup, &block)
       config = config.dup
-      block.call(config) if block_given?
-      config = config.update(options)
+      yield(config) if block
+      config.update(options)
 
       new(response, config: config, options: options).call
     end

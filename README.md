@@ -1,6 +1,9 @@
-# ApiResponse
+# api-response-presenter
+[![Gem Version](https://badge.fury.io/rb/api-response-presenter.svg)](https://badge.fury.io/rb/api-response-presenter) [![Build Status](https://app.travis-ci.com/golifox/api-response-presenter.svg?branch=main)](https://app.travis-ci.com/golifox/api-response-presenter)
+[![Coverage Status](https://coveralls.io/repos/github/golifox/api-response-presenter/badge.svg)](https://coveralls.io/github/golifox/api-response-presenter)
+[![Inline docs](https://inch-ci.org/github/golifox/api-response-presenter.svg?branch=main)](https://inch-ci.org/github/golifox/api-response-presenter)
 
-The `api_response` gem provides a flexible and easy-to-use interface for processing API responses using Faraday or
+The `api-response-presenter` gem provides a flexible and easy-to-use interface for processing API responses using Faraday or
 RestClient with the possibility to configure global settings or per-instance settings. It leverages
 the `Dry::Configurable` for configurations, ensuring high performance and full test coverage.
 
@@ -13,7 +16,7 @@ This library oficially supports the following Ruby versions:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'api_response'
+gem 'api-response-presenter'
 ```
 
 And then execute:
@@ -25,7 +28,7 @@ bundle install
 Or install it yourself as:
 
 ```bash
-gem install api_response
+gem install api-response-presenter
 ```
 
 ## Usage

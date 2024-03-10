@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe ApiResponse do
-  before(:each) { ApiResponse.reset_config }
+  before { described_class.reset_config }
 
   describe '.config' do
     subject { described_class.config }
@@ -28,6 +28,8 @@ RSpec.describe ApiResponse do
   end
 
   describe '.configure' do
+    subject { described_class.config }
+
     let(:struct) { double('Struct') }
     let(:expected_attributes) do
       {
@@ -60,8 +62,6 @@ RSpec.describe ApiResponse do
         config.default_error = expected_attributes[:default_error]
       end
     end
-
-    subject { described_class.config }
 
     it { is_expected.to have_attributes(expected_attributes) }
   end

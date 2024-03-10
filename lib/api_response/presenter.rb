@@ -13,7 +13,7 @@ module ApiResponse
     end
 
     def call(&block)
-      if block_given?
+      if block
         Processor.call(response, config: config, options: options, &block)
       else
         Processor.call(response, config: config, options: options)

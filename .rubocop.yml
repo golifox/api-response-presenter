@@ -1,3 +1,7 @@
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 2.7.4
   SuggestExtensions: false
@@ -30,3 +34,12 @@ Lint/NonDeterministicRequireOrder:
 Style/StringLiterals:
   Exclude:
     - 'spec/**/*'
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false

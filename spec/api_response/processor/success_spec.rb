@@ -9,14 +9,14 @@ end
 
 RSpec.describe ApiResponse::Processor::Success do
   describe '.call' do
-    before(:each) { ApiResponse.reset_config }
+    subject { described_class.new(response).call }
+
+    before { ApiResponse.reset_config }
 
     let(:body) { '{"id": 1, "name": "John"}' }
     let(:array_body) { '[{"id": 1, "name": "John"}, {"id": 2, "name": "Doe"}]' }
     let(:response_body) { body }
     let(:response) { double('Response', body: response_body) }
-
-    subject { described_class.new(response).call }
 
     context 'when raw_response is true' do
       before do
@@ -56,6 +56,7 @@ RSpec.describe ApiResponse::Processor::Success do
 
       context 'when response body is an array' do
         let(:response_body) { array_body }
+        let(:expected) { [User.new(id: 1, name: 'John'), User.new(id: 2, name: 'Doe')] }
 
         before do
           ApiResponse.configure do |config|
@@ -63,8 +64,6 @@ RSpec.describe ApiResponse::Processor::Success do
             config.struct = User
           end
         end
-
-        let(:expected) { [User.new(id: 1, name: 'John'), User.new(id: 2, name: 'Doe')] }
 
         it { is_expected.to eq(expected) }
       end
@@ -103,6 +102,7 @@ RSpec.describe ApiResponse::Processor::Success do
           config.extract_from_body = ->(body) { body[:result] }
         end
       end
+
       context 'when proc called succesfully' do
         let(:response_body) { '{"result": {"id": 1, "name": "John"}}' }
         let(:expected) { Oj.load(response_body, mode: :compat, symbol_keys: true).fetch(:result) }
@@ -116,6 +116,7 @@ RSpec.describe ApiResponse::Processor::Success do
 
         it { is_expected.to eq(expected) }
       end
+
       context 'when proc called with error' do
         before do
           ApiResponse.configure do |config|

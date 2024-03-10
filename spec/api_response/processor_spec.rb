@@ -5,7 +5,7 @@ require 'dry/types'
 RSpec.describe ApiResponse::Processor do
   let(:body) { "{\"result\":{\"id\":1}}" }
 
-  before(:each) { ApiResponse.reset_config }
+  before { ApiResponse.reset_config }
 
   describe '.process' do
     subject { described_class.new(response).call }
@@ -26,7 +26,7 @@ RSpec.describe ApiResponse::Processor do
       end
 
       context 'when response is success' do
-        let(:response) { instance_double('Response', code: 200, body: body) }
+        let(:response) { instance_double(Response, code: 200, body: body) }
 
         it 'calls success processor' do
           subject
@@ -35,7 +35,7 @@ RSpec.describe ApiResponse::Processor do
       end
 
       context 'when response is failure' do
-        let(:response) { instance_double('Response', code: 404, body: 'Not found') }
+        let(:response) { instance_double(Response, code: 404, body: 'Not found') }
 
         it 'calls failure processor' do
           subject
@@ -45,7 +45,7 @@ RSpec.describe ApiResponse::Processor do
     end
 
     context 'when response does not respond to .body' do
-      let(:response) { instance_double('Response', status: 200) }
+      let(:response) { instance_double(Response, status: 200) }
 
       it { expect { subject }.to raise_error(Dry::Types::ConstraintError) }
     end
@@ -55,19 +55,19 @@ RSpec.describe ApiResponse::Processor do
     subject { described_class.new(response).call }
 
     context 'when response is success' do
-      let(:response) { instance_double('Response', status: 200, body: body) }
+      let(:response) { instance_double(Response, status: 200, body: body) }
 
       it { is_expected.to eq({result: {id: 1}}) }
     end
 
     context 'when response is failure' do
-      let(:response) { instance_double('Response', status: 400, body: 'Not found') }
+      let(:response) { instance_double(Response, status: 400, body: 'Not found') }
 
       it { is_expected.to be_nil }
     end
 
     context 'when response does not respond to .body' do
-      let(:response) { instance_double('Response', status: 200) }
+      let(:response) { instance_double(Response, status: 200) }
 
       it { expect { subject }.to raise_error(Dry::Types::ConstraintError) }
     end
@@ -85,7 +85,7 @@ RSpec.describe ApiResponse::Processor do
         end
       end
 
-      let(:response) { instance_double('Response', status: 200, body: body) }
+      let(:response) { instance_double(Response, status: 200, body: body) }
 
       it { is_expected.to eq(Dry::Monads::Result::Success.new(OpenStruct.new(id: 1))) }
     end
@@ -97,13 +97,13 @@ RSpec.describe ApiResponse::Processor do
         end
       end
 
-      let(:response) { instance_double('Response', status: 200, body: body) }
+      let(:response) { instance_double(Response, status: 200, body: body) }
 
       it { is_expected.to eq(response) }
     end
 
     context 'when response is failure' do
-      let(:response) { instance_double('Response', status: 400, body: 'Not found') }
+      let(:response) { instance_double(Response, status: 400, body: 'Not found') }
 
       it { is_expected.to be_nil }
     end
@@ -116,7 +116,7 @@ RSpec.describe ApiResponse::Processor do
           end
         end
 
-        let(:response) { instance_double('Response', status: 400, status: 404, body: 'Not found') }
+        let(:response) { instance_double(Response, status: 404, body: 'Not found') }
 
         it { is_expected.to be_failure }
 
@@ -136,7 +136,7 @@ RSpec.describe ApiResponse::Processor do
         end
       end
 
-      let(:response) { instance_double('Response', status: 400, status: 404, body: body) }
+      let(:response) { instance_double(Response, status: 404, body: body) }
 
       context 'when body can be parsed as json' do
         let(:body) { "{\"error\":\"error\"}" }
