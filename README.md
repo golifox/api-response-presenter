@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/golifox/api-response-presenter/badge.svg)](https://coveralls.io/github/golifox/api-response-presenter)
 [![Inline docs](https://inch-ci.org/github/golifox/api-response-presenter.svg?branch=main)](https://inch-ci.org/github/golifox/api-response-presenter)
 
-The `api-response-presenter` gem provides a flexible and easy-to-use interface for processing API responses using Faraday or
+The `api-response-presenter` gem provides a flexible and easy-to-use interface for presenting API responses using Faraday or
 RestClient with the possibility to configure global settings or per-instance settings. It leverages
 the `Dry::Configurable` for configurations, ensuring high performance and full test coverage.
 
@@ -35,7 +35,7 @@ gem install api-response-presenter
 
 ### Configuration
 
-You can configure api_response globally in an initializer or setup block:
+You can configure `api-response-presenter` globally in an initializer or setup block:
 
 ```ruby
 # config/initializers/api_response.rb
@@ -86,6 +86,30 @@ else
   puts "Error: #{result.failure}"
 end
 
+```
+
+Also you can create decorator for using functionality e.g.
+
+```ruby
+module ApiResponseHandler # or ExternalApiBaseClass
+  private def with_presentation(response, **, &)
+    ApiResponse::Presenter.call(response, **, &)
+  end
+end
+
+class ExtenalApiService < ExternalApiBaseClass
+  # or include ApiResponseHandler
+
+  ...
+
+  def get_external_data(*, **, &)
+    response = get('/data', *)
+
+    with_presentation(response, **, &)
+  end
+  
+  ...
+end
 ```
 
 ### Config options
@@ -174,8 +198,12 @@ class EmployeeApiService
   def self.get_employees(monad: false, adapter: :faraday, **options)
     # or (params, presenter_options = {})
     response = Faraday.get('https://api.example.com/data', params) # => body: "{\"data\": [{\"id\": 1, \"name\": \"John\"}]}"
-    ApiResponse::Presenter.call(response, monad: monad, adapter: adapter) do |c|
-      c.extract_from_body = ->(body) { Kaminari.paginate_array(body[:data]).page(1).per(5) }
+
+    page = options.fetch(:page, 1)
+    per = options.fetch(:per, 5)
+
+    ApiResponse::Presenter.call(response, monad: monad, adapter: adapter) do |c|  
+      c.extract_from_body = ->(body) { Kaminari.paginate_array(body[:data]).page(page).per(per) }
       c.struct = Employee
       c.default_return_value = []
     end
@@ -247,6 +275,31 @@ or
 
 ```ruby
 ApiResponse::Presenter.call(response, success_processor: MyClass, failure_processor: MyClass, parser: MyClass)
+```
+
+NOTE: If you are using Faraday with Oj middleware to parse json body already, you should redefine parser like this (in next gem version will be available configuring parsing (on/off))
+
+```ruby
+# config/initializers/api_response.rb
+
+require 'api_response'
+
+class EmptyParser
+  attr_reader :response, :config
+
+  def initialize(response, config: nil)
+    @response = response
+    @config = config
+  end
+
+  def call
+    response.body
+  end
+end
+
+ApiResponse.configure do |config|
+  config.parser = EmptyParser
+end
 ```
 
 #### Options
