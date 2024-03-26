@@ -9,6 +9,7 @@ RSpec.describe ApiResponse::Processor::Failure do
     before { ApiResponse.reset_config }
 
     let(:body) { "{\"error\":\"Not found\"}" }
+    let(:parsed_body) { Oj.load(body, mode: :compat, symbol_keys: true) }
     let(:response) { double('Response', body: body, status: 404) }
     let!(:config) { ApiResponse.config }
 
@@ -45,10 +46,8 @@ RSpec.describe ApiResponse::Processor::Failure do
         ApiResponse.configure { |c| c.error_json = true }
       end
 
-      let(:expected) { Oj.load(body, mode: :compat, symbol_keys: true) }
-
       context 'when response body is a JSON' do
-        it { is_expected.to eq(expected) }
+        it { is_expected.to eq(parsed_body) }
       end
 
       context 'when response body is not a JSON' do
@@ -128,7 +127,7 @@ RSpec.describe ApiResponse::Processor::Failure do
           it { is_expected.to be_failure }
 
           it 'returns a monad with default attributes' do
-            expect(subject.failure).to include(error:     'Not Found',
+            expect(subject.failure).to include(error:     parsed_body,
                                                error_key: 'not_found',
                                                status:    :bad_request)
           end
@@ -151,7 +150,7 @@ RSpec.describe ApiResponse::Processor::Failure do
         it { is_expected.to be_failure }
 
         it 'returns a monad with default attributes' do
-          expect(subject.failure).to include(error:     'Not Found',
+          expect(subject.failure).to include(error:     parsed_body,
                                              error_key: 'not_found',
                                              status:    :bad_request)
         end

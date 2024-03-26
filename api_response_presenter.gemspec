@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'dry-initializer', '~> 3.0'
   s.add_runtime_dependency 'dry-monads', '~> 1.6'
   s.add_runtime_dependency 'dry-types', '~> 1.5'
-  s.add_runtime_dependency 'oj', '~> 3.13'
+  s.add_runtime_dependency 'oj', '~> 3.16.3'
   s.add_runtime_dependency 'zeitwerk', '~> 2.4'
 
   s.add_runtime_dependency 'dry-struct', '~> 1.5'

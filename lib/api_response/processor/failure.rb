@@ -32,7 +32,7 @@ module ApiResponse
 
       def build_error_monad
         status = config.default_status || prepare_status(response)
-        error = config.default_error || response_body.fetch(:error, nil) || response_body
+        error = config.error_json ? response_body : build_error
         error_key = config.default_error_key || response_body.fetch(:error_key, nil)
 
         Failure({error: error, error_key: error_key, status: status})
@@ -57,6 +57,10 @@ module ApiResponse
         else
           config.default_status
         end
+      end
+
+      def build_error
+        config.default_error || response_body
       end
     end
   end
